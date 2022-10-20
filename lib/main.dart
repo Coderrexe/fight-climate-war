@@ -1,6 +1,9 @@
+import 'package:fight_climate_war/screens/user_auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'src/locations.dart' as locations;
+import 'package:firebase_core/firebase_core.dart';
+
 
 // STAGE 1:
 
@@ -13,7 +16,13 @@ import 'src/locations.dart' as locations;
 // TODO: - make main page & styling
 // TODO: - comments (sorry)
 
-void main() {
+void main() async  {
+  // We have to load Flutter widgets before initializing Firebase app.
+  // There would be an error if we don't do this step.
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase app.
+  await Firebase.initializeApp();
+
   runApp(const SearchPage());
 }
 
@@ -57,10 +66,19 @@ class _SearchPageState extends State<SearchPage> {
 
       },
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SignupScreen(),
+              ),
+            );
+          },
+          child: Text("Sign up")
+        ),
           appBar: AppBar(
             title: const Text('Search Google Locations...'),
             backgroundColor: Colors.green[700],
-
           ),
           body: Scaffold(
             body: GoogleMap(
